@@ -1,5 +1,7 @@
 package br.com.cafegoxtoso.domain;
 
+import java.util.List;
+
 public enum Cafes {
     AMERICANO(1, "Americano", 6.0),
     EXPRESSO(2, "Expresso", 7.0),
@@ -34,8 +36,8 @@ public enum Cafes {
 
     @Override
     public String toString() {
-        return "Codigo: " + codigo +
-                ", Café: " + nome +
-                ", Valor: " + valor;
+        return getCodigo()
+            + " " + getNome()
+            + " " + getValor();
     }
 }

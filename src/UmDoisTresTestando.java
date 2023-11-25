@@ -1,44 +1,46 @@
 import br.com.cafegoxtoso.domain.Cafes;
+import br.com.cafegoxtoso.domain.MensagensAtendimento;
+import br.com.cafegoxtoso.domain.SomaListaCafe;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
 public class UmDoisTresTestando {
     public static void main(String[] args) {
-        System.out.println("Bom dia, seja bem vindo ao café goxtoso, este é o nosso menu, digite a opção desejada ou o número 0 para sair:\n");
+        MensagensAtendimento.INICIO_ATENDIMENTO.printMensagem();
 
-        for(Cafes cafe: Cafes.values()) {
-            System.out.println(cafe.getCodigo() + " " + cafe.getNome() + " " + cafe.getValor());
-        }
+        List<Cafes> cafes = List.of(Cafes.values());
+        cafes.forEach(System.out::println);
 
-        String mensagemPadraoEscolhas = "caso deseje outro, digite o numero correspondente ou zero para sair.";
         List<Cafes> cafesDoPedido = new ArrayList<>();
         int opcao = -1;
 
-        List<Cafes> listaDeCafes = List.of(Cafes.values());
         Scanner scan = new Scanner(System.in);
 
         while((opcao = scan.nextInt()) != 0) {
 
             try {
-                if (listaDeCafes.get(opcao-1) != null) {
-                    cafesDoPedido.add(listaDeCafes.get(opcao-1));
-                    System.out.println(mensagemPadraoEscolhas);
+                if (cafes.get(opcao-1) != null) {
+                    cafesDoPedido.add(cafes.get(opcao-1));
+
+                    MensagensAtendimento.PADRAO_ERRO_ESCOLHA.printMensagem();
                 }
+
             } catch (Exception e) {
-                System.out.println("escolha uma opção válida ou 0 para finalizar");
+                MensagensAtendimento.PADRAO_ERRO_ESCOLHA.printMensagem();
             }
         }
 
-        System.out.println("pedido finalizado!\n");
+        MensagensAtendimento.FINALIZANDO_PEDIDO.printMensagem();
 
-        System.out.println("Cafés pedidos:\n");
+        cafesDoPedido.sort(Comparator.comparing(Cafes::getCodigo));
         cafesDoPedido.forEach(System.out::println);
 
-        double valorTotalPedido = cafesDoPedido.stream().mapToDouble(Cafes::getValor).sum();
+        SomaListaCafe soma = new SomaListaCafe();
+        double valorTotalPedido = soma.somaCafes(cafesDoPedido);
 
         System.out.println("\nTotal: " + valorTotalPedido);
-
     }
 }
