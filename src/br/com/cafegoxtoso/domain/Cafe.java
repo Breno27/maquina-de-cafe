@@ -1,8 +1,6 @@
 package br.com.cafegoxtoso.domain;
 
-import java.util.List;
-
-public enum Cafes {
+public enum Cafe {
     AMERICANO(1, "Americano", 6.0),
     EXPRESSO(2, "Expresso", 7.0),
     CAPUCCINO(3, "Capuccino", 8.0),
@@ -16,10 +14,19 @@ public enum Cafes {
     private final String nome;
     private final double valor;
 
-    Cafes(int codigo, String nome, double valor) {
+    Cafe(int codigo, String nome, double valor) {
         this.codigo = codigo;
         this.nome = nome;
         this.valor = valor;
+    }
+
+    public static Cafe cafePorCodigo(int codigoCafe){
+        for (Cafe cafe : values()) {
+            if (cafe.getCodigo() == codigoCafe){
+                return cafe;
+            }
+        }
+        return null;
     }
 
     public int getCodigo() {

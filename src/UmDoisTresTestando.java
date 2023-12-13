@@ -1,6 +1,5 @@
-import br.com.cafegoxtoso.domain.Cafes;
+import br.com.cafegoxtoso.domain.Cafe;
 import br.com.cafegoxtoso.domain.MensagensAtendimento;
-import br.com.cafegoxtoso.domain.SomaListaCafe;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -11,36 +10,37 @@ public class UmDoisTresTestando {
     public static void main(String[] args) {
         MensagensAtendimento.INICIO_ATENDIMENTO.printMensagem();
 
-        List<Cafes> cafes = List.of(Cafes.values());
-        cafes.forEach(System.out::println);
+        List<Cafe> cafe = List.of(Cafe.values());
+        cafe.forEach(System.out::println);
 
-        List<Cafes> cafesDoPedido = new ArrayList<>();
-        int opcao = -1;
+        List<Cafe> cafesDoPedido = new ArrayList<>();
 
         Scanner scan = new Scanner(System.in);
+        int opcao = scan.nextInt();
 
-        while((opcao = scan.nextInt()) != 0) {
-
+        do {
             try {
-                if (cafes.get(opcao-1) != null) {
-                    cafesDoPedido.add(cafes.get(opcao-1));
+                if (Cafe.cafePorCodigo(opcao) != null) {
+                    cafesDoPedido.add(cafe.get(opcao));
 
-                    MensagensAtendimento.PADRAO_ERRO_ESCOLHA.printMensagem();
+                    MensagensAtendimento.PADRAO_ESCOLHAS.printMensagem();
                 }
 
             } catch (Exception e) {
                 MensagensAtendimento.PADRAO_ERRO_ESCOLHA.printMensagem();
             }
-        }
+        } while ((opcao = scan.nextInt()) != 0);
 
         MensagensAtendimento.FINALIZANDO_PEDIDO.printMensagem();
 
-        cafesDoPedido.sort(Comparator.comparing(Cafes::getCodigo));
+        cafesDoPedido.sort(Comparator.comparing(Cafe::getCodigo));
         cafesDoPedido.forEach(System.out::println);
 
-        SomaListaCafe soma = new SomaListaCafe();
-        double valorTotalPedido = soma.somaCafes(cafesDoPedido);
+        double somaCafesPedido;
+        somaCafesPedido = cafesDoPedido.stream()
+                .mapToDouble(Cafe::getValor)
+                .sum();
 
-        System.out.println("\nTotal: " + valorTotalPedido);
+        System.out.println("\nTotal: " + somaCafesPedido);
     }
 }
